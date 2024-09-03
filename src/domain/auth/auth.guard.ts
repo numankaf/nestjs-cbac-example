@@ -9,11 +9,14 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ClsService } from 'nestjs-cls';
 import { guardSkipper } from '../../common/utils/guard-skipper';
+import { Permission } from '../permission/permission.entity';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
+    private userService: UserService,
     private readonly clsService: ClsService,
     private readonly reflector: Reflector,
   ) {}
@@ -31,6 +34,18 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
       this.clsService.set('payload', payload);
+      if (payload.sub) {
+        const user = await this.userService.findUserWithPermissions(
+          payload.sub,
+        );
+        this.clsService.set('user', user);
+        this.clsService.set(
+          'permissions',
+          user.role.permissions.map((permission: Permission) => {
+            return permission.id;
+          }),
+        );
+      }
     } catch {
       throw new UnauthorizedException();
     }

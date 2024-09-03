@@ -24,7 +24,7 @@ export class UserController {
 
   @Get('/:id')
   async getUserById(@Param('id') id: number): Promise<UserDetailDto> {
-    const user = await this.userService.getUserById(id);
+    const user = await this.userService.findUserById(id);
     return plainToClass(UserDetailDto, user, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,

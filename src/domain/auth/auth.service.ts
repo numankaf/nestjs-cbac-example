@@ -27,6 +27,8 @@ export class AuthService {
     const payload = {
       sub: user.id,
       user_name: user.user_name,
+      role: { id: user.role.id, name: user.role.name },
+      permission: user.role.permissions.map((permission) => permission.id),
     };
 
     const response: LoginResponseDto = {
