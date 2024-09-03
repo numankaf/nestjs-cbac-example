@@ -7,8 +7,9 @@ import {
 } from '@nestjs/common';
 
 import { ApiTags } from '@nestjs/swagger';
+import { plainToClass } from 'class-transformer';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.entity';
+import { UserDetailDto } from './dto/user-detail.dto';
 import { UserService } from './user.service';
 @Controller('user')
 //@ApiBearerAuth()
@@ -17,7 +18,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return await this.userService.createUser(createUserDto);
+  async createUser(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<UserDetailDto> {
+    const user = await this.userService.createUser(createUserDto);
+    return plainToClass(UserDetailDto, user, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    });
   }
 }
