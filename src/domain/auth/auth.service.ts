@@ -31,6 +31,7 @@ export class AuthService {
 
     const response: LoginResponseDto = {
       access_token: await this.jwtService.signAsync(payload),
+      expires_in: process.env.ACCESS_TOKEN_EXPIRE_TIME,
     } as LoginResponseDto;
     return response;
   }
