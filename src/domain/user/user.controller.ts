@@ -7,6 +7,7 @@ import { PermissionEnum } from '../../common/enums/permission.enum';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserService } from './user.service';
+
 @Controller('user')
 @ApiBearerAuth()
 @ApiTags('user')
@@ -25,6 +26,7 @@ export class UserController {
     });
   }
 
+  @HasPermissions(PermissionEnum.USER_READ_WRITE, PermissionEnum.USER_READ)
   @Get('/:id')
   async getUserById(@Param('id') id: number): Promise<UserDetailDto> {
     const user = await this.userService.findUserById(id);

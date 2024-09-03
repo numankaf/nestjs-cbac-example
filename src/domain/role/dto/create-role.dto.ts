@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
-import { Permission } from '../../permission/permission.entity';
 
 export class CreateRoleDto {
   @IsString()
@@ -15,5 +14,5 @@ export class CreateRoleDto {
   @ApiProperty({
     description: 'Permissions',
   })
-  permissions: Permission[];
+  permissions: number[];
 }
