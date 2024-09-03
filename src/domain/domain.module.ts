@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
 import { UserModule } from './user/user.module';
+import { PermissionGuard } from './permission/permission.guard';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UserModule } from './user/user.module';
   controllers: [],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: PermissionGuard },
 
     // { provide: APP_INTERCEPTOR, useClass: ClsInterceptor },
   ],

@@ -2,6 +2,8 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToClass } from 'class-transformer';
+import { HasPermissions } from '../../common/decorator/permission.decorator';
+import { PermissionEnum } from '../../common/enums/permission.enum';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserService } from './user.service';
@@ -12,6 +14,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @HasPermissions(PermissionEnum.USER_READ_WRITE)
   async createUser(
     @Body() createUserDto: CreateUserDto,
   ): Promise<UserDetailDto> {
